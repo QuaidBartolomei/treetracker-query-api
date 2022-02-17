@@ -8,4 +8,4 @@ module.exports = {
   // lint entire project if eslint settings changed
   // do not pass file name arguments
   '.eslint*': () => 'eslint . --fix --cache',
-};
+}

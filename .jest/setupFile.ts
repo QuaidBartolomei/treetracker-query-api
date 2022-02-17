@@ -1,5 +1,5 @@
-import knex from 'infra/database/knex';
+import knex from 'infra/database/knex'
 
 afterAll(async () => {
-  await knex.destroy();
-});
+  await knex.destroy()
+})

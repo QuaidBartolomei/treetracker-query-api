@@ -1,9 +1,9 @@
 /*
  * Some utils for router/express
  */
-import { ValidationError } from 'joi';
-import log from 'loglevel';
-import HttpError from '../utils/HttpError';
+import { ValidationError } from 'joi'
+import log from 'loglevel'
+import HttpError from '../utils/HttpError'
 
 /*
  * This is from the library https://github.com/Abazhenov/express-async-handler
@@ -22,35 +22,35 @@ import HttpError from '../utils/HttpError';
  */
 const handlerWrapper = (fn) =>
   function wrap(...args) {
-    const fnReturn = fn(...args);
-    const next = args[args.length - 1];
+    const fnReturn = fn(...args)
+    const next = args[args.length - 1]
     return Promise.resolve(fnReturn).catch((e) => {
-      next(e);
-    });
-  };
+      next(e)
+    })
+  }
 
 const errorHandler = (err, _req, res, _next) => {
   if (process.env.NODE_LOG_LEVEL === 'debug') {
-    log.error('catch error:', err);
+    log.error('catch error:', err)
   } else {
-    log.error('catch error:', err);
+    log.error('catch error:', err)
   }
   if (err instanceof HttpError) {
     res.status(err.code).send({
       code: err.code,
       message: err.message,
-    });
+    })
   } else if (err instanceof ValidationError) {
     res.status(422).send({
       code: 422,
       message: err.details.map((m) => m.message).join(';'),
-    });
+    })
   } else {
     res.status(500).send({
       code: 500,
       message: `Unknown error (${err.message})`,
-    });
+    })
   }
-};
+}
 
-export { handlerWrapper, errorHandler };
+export { handlerWrapper, errorHandler }

@@ -1,12 +1,12 @@
-import Country from 'interfaces/Country';
-import Filter from 'interfaces/Filter';
-import HttpError from 'utils/HttpError';
-import BaseRepository from './BaseRepository';
-import Session from './Session';
+import Country from 'interfaces/Country'
+import Filter from 'interfaces/Filter'
+import HttpError from 'utils/HttpError'
+import BaseRepository from './BaseRepository'
+import Session from './Session'
 
 export default class CountryRepository extends BaseRepository<Country> {
   constructor(session: Session) {
-    super('region', session);
+    super('region', session)
   }
 
   async getById(id: string | number) {
@@ -21,18 +21,18 @@ export default class CountryRepository extends BaseRepository<Country> {
       )
       .table(this.tableName)
       .where('id', id)
-      .first();
+      .first()
     if (!object) {
-      throw new HttpError(404, `Can not found ${this.tableName} by id:${id}`);
+      throw new HttpError(404, `Can not found ${this.tableName} by id:${id}`)
     }
-    return object;
+    return object
   }
 
   async getByFilter(
     filter: Filter = {},
     // options?: { limit?: number | undefined } | undefined,
   ): Promise<Country[]> {
-    const { lat, lon } = filter;
+    const { lat, lon } = filter
     const sql = `
         WITH country_id AS (
           select id from region_type where type = 'country'
@@ -47,15 +47,15 @@ export default class CountryRepository extends BaseRepository<Country> {
             ST_Contains(geom, ST_GeomFromText('POINT(${lon} ${lat})', 4326)) = true
             AND 
             type_id in (select id from country_id);
-    `;
-    const object = await this.session.getDB().raw(sql);
+    `
+    const object = await this.session.getDB().raw(sql)
     if (!object || object.rows.length <= 0) {
       throw new HttpError(
         404,
         `Can not found ${this.tableName} by lat:${lat} lon:${lon}`,
-      );
+      )
     }
-    return object.rows;
+    return object.rows
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -154,6 +154,6 @@ export default class CountryRepository extends BaseRepository<Country> {
         centroid:
           '{"type":"Point","coordinates":[23.6439610660395,-2.87746288969974]}',
       },
-    ];
+    ]
   }
 }

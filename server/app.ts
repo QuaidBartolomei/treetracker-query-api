@@ -1,23 +1,23 @@
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import express from 'express';
-import countriesRouter from './routers/countriesRouter';
-import organizationsRouter from './routers/organizationsRouter';
-import plantersRouter from './routers/plantersRouter';
-import speciesRouter from './routers/speciesRouter';
-import treesRouter from './routers/treesRouter';
-import { errorHandler, handlerWrapper } from './routers/utils';
-import walletsRouter from './routers/walletsRouter';
-import HttpError from './utils/HttpError';
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import express from 'express'
+import countriesRouter from './routers/countriesRouter'
+import organizationsRouter from './routers/organizationsRouter'
+import plantersRouter from './routers/plantersRouter'
+import speciesRouter from './routers/speciesRouter'
+import treesRouter from './routers/treesRouter'
+import { errorHandler, handlerWrapper } from './routers/utils'
+import walletsRouter from './routers/walletsRouter'
+import HttpError from './utils/HttpError'
 
-const version = process.env.npm_package_version;
+const version = process.env.npm_package_version
 
-const app = express();
+const app = express()
 
 // Sentry.init({ dsn: config.sentry_dsn });
 
 // app allow cors
-app.use(cors());
+app.use(cors())
 
 /*
  * Check request
@@ -33,28 +33,28 @@ app.use(
         throw new HttpError(
           415,
           'Invalid content type. API only supports application/json',
-        );
+        )
       }
     }
-    next();
+    next()
   }),
-);
+)
 
-app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
-app.use(bodyParser.json()); // parse application/json
+app.use(bodyParser.urlencoded({ extended: false })) // parse application/x-www-form-urlencoded
+app.use(bodyParser.json()) // parse application/json
 
 // routers
-app.use('/countries', countriesRouter);
-app.use('/trees', treesRouter);
-app.use('/planters', plantersRouter);
-app.use('/organizations', organizationsRouter);
-app.use('/species', speciesRouter);
-app.use('/wallets', walletsRouter);
+app.use('/countries', countriesRouter)
+app.use('/trees', treesRouter)
+app.use('/planters', plantersRouter)
+app.use('/organizations', organizationsRouter)
+app.use('/species', speciesRouter)
+app.use('/wallets', walletsRouter)
 // Global error handler
-app.use(errorHandler);
+app.use(errorHandler)
 
 app.get('*', (req, res) => {
-  res.status(404).send(version);
-});
+  res.status(404).send(version)
+})
 
-export default app;
+export default app

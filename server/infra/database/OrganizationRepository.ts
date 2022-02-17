@@ -1,15 +1,15 @@
-import FilterOptions from 'interfaces/FilterOptions';
-import Organization from 'interfaces/Organization';
-import BaseRepository from './BaseRepository';
-import Session from './Session';
+import FilterOptions from 'interfaces/FilterOptions'
+import Organization from 'interfaces/Organization'
+import BaseRepository from './BaseRepository'
+import Session from './Session'
 
 export default class OrganizationRepository extends BaseRepository<Organization> {
   constructor(session: Session) {
-    super('entity', session);
+    super('entity', session)
   }
 
   async getByPlanter(planter_id: number, options: FilterOptions) {
-    const { limit, offset } = options;
+    const { limit, offset } = options
     const sql = `
       SELECT
         *
@@ -18,8 +18,8 @@ export default class OrganizationRepository extends BaseRepository<Organization>
       WHERE planter.id = ${planter_id}
       LIMIT ${limit}
       OFFSET ${offset}
-    `;
-    const object = await this.session.getDB().raw(sql);
-    return object.rows;
+    `
+    const object = await this.session.getDB().raw(sql)
+    return object.rows
   }
 }

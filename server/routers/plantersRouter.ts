@@ -1,25 +1,25 @@
-import express from 'express';
-import Joi from 'joi';
-import Filter from 'interfaces/Filter';
-import { handlerWrapper } from './utils';
-import PlanterRepository from '../infra/database/PlanterRepository';
-import Session from '../infra/database/Session';
-import PlanterModel from '../models/Planter';
+import express from 'express'
+import Joi from 'joi'
+import Filter from 'interfaces/Filter'
+import { handlerWrapper } from './utils'
+import PlanterRepository from '../infra/database/PlanterRepository'
+import Session from '../infra/database/Session'
+import PlanterModel from '../models/Planter'
 
-const router = express.Router();
+const router = express.Router()
 
 router.get(
   '/:id',
   handlerWrapper(async (req, res) => {
-    Joi.assert(req.params.id, Joi.number().required());
-    const repo = new PlanterRepository(new Session());
-    const exe = PlanterModel.getById(repo);
-    const result = await exe(req.params.id);
-    result.links = PlanterModel.getPlanterLinks(result);
-    res.send(result);
-    res.end();
+    Joi.assert(req.params.id, Joi.number().required())
+    const repo = new PlanterRepository(new Session())
+    const exe = PlanterModel.getById(repo)
+    const result = await exe(req.params.id)
+    result.links = PlanterModel.getPlanterLinks(result)
+    res.send(result)
+    res.end()
   }),
-);
+)
 
 router.get(
   '/',
@@ -31,17 +31,17 @@ router.get(
         limit: Joi.number().integer().min(1).max(1000),
         offset: Joi.number().integer().min(0),
       }),
-    );
-    const { limit = 20, offset = 0, organization_id } = req.query;
-    const repo = new PlanterRepository(new Session());
-    const filter: Filter = {};
+    )
+    const { limit = 20, offset = 0, organization_id } = req.query
+    const repo = new PlanterRepository(new Session())
+    const filter: Filter = {}
     if (organization_id) {
-      filter.organization_id = organization_id;
+      filter.organization_id = organization_id
     }
     const result = await PlanterModel.getByFilter(repo)(filter, {
       limit,
       offset,
-    });
+    })
     res.send({
       total: null,
       offset,
@@ -50,9 +50,9 @@ router.get(
         ...planter,
         links: PlanterModel.getPlanterLinks(planter),
       })),
-    });
-    res.end();
+    })
+    res.end()
   }),
-);
+)
 
-export default router;
+export default router

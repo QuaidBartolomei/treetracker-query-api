@@ -6,20 +6,20 @@
  */
 
 export default class HttpError extends Error {
-  code: number;
+  code: number
 
-  toRollback: boolean;
+  toRollback: boolean
 
   constructor(code: number, message: string, toRollback = true) {
-    super(message);
-    Object.setPrototypeOf(this, new.target.prototype); // restore prototype chain
-    this.code = code;
+    super(message)
+    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
+    this.code = code
     // set rollback flag, so the transaction of db would rollback when catch this error
     // set default to true
-    this.toRollback = toRollback;
+    this.toRollback = toRollback
   }
 
   shouldRollback() {
-    return this.toRollback;
+    return this.toRollback
   }
 }

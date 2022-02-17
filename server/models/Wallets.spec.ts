@@ -1,4 +1,4 @@
-import WalletsModel from './Wallets';
+import WalletsModel from './Wallets'
 
 describe('/wallets', () => {
   it('get wallet by id or name', async () => {
@@ -9,16 +9,16 @@ describe('/wallets', () => {
       salt: null,
       logo_url: null,
       created_at: '2021-10-08T02:33:20.732Z',
-    };
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const repo: any = {
       getWalletByIdOrName: jest.fn(() => Promise.resolve(wallets)),
-    };
+    }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const execute = WalletsModel.getWalletByIdOrName(repo);
-    const result = await execute(1);
-    expect(result).toMatchObject(wallets);
-    expect(repo.getWalletByIdOrName).toBeCalledWith(1);
-  });
-});
+    const execute = WalletsModel.getWalletByIdOrName(repo)
+    const result = await execute(1)
+    expect(result).toMatchObject(wallets)
+    expect(repo.getWalletByIdOrName).toBeCalledWith(1)
+  })
+})

@@ -3,5 +3,5 @@ export default function (json) {
     type: json.type,
     lat: json.coordinates[0],
     lon: json.coordinates[1],
-  };
+  }
 }
